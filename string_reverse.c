@@ -2,24 +2,30 @@
 #include <stdlib.h>
 #include <string.h>
 
-char *reverse(char *string) {
-    int len = strlen(string);
-    char *p = calloc(len + 1, sizeof(char));
+char *string_calloc(size_t size) {
+    char *str = calloc(size, sizeof(char));
+    if (str == NULL) {
+        fprintf(stderr, "Out of memory");
+        exit(EXIT_FAILURE);
+    }
+    return str;
+}
 
-    for (int i = len; i >= 0; i--) {
-        *p = string[i];
-        p++;
+void reverse(char *string, char *buffer) {
+    int len = strlen(string);
+
+    for (int i = (len - 1); i >= 0; i--) {
+        *buffer = string[i];
+        buffer++;
     }
 
-    p = p - len;
-    
-    char *result = p;
-
-    return result;
+    buffer = buffer - len;
 }
 
 int main(void) {
-    char *string = "Ash";
-    char *reversedString = reverse(string);
-    printf("%s\n", reversedString);
+    char *buffer = string_calloc(4);
+    char *input = "Ash";
+    reverse(input, buffer);
+    printf("%s\n", buffer);
+    free(buffer);
 }
